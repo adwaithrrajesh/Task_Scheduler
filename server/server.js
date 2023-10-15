@@ -24,7 +24,7 @@ app.use('/api',TaskRouter)
 
 //-------------------------------------------- PORT --------------------------------------------
 
-const port = process.env.PORT;
+const port = 8080;
 
 
 

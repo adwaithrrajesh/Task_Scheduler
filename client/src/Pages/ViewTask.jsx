@@ -8,19 +8,19 @@ import { deleteTask } from "../API/taskAPI";
 function ViewTask () {
   const [selectedPriority, setSelectedPriority] = useState("all");
   const [selectedTask, setSelectedTask] = useState(null);
-  const [tasks,setTasks] = useState([])
-  const [refresh,setRefresh] = useState(true)
-  const navigate = useNavigate()
+  const [tasks, setTasks] = useState([]);
+  const [refresh, setRefresh] = useState(true);
+  const navigate = useNavigate();
 
-  useEffect(()=>{
-    getTask()
-  },[refresh])
+  useEffect(() => {
+    getTask();
+  }, [refresh]);
 
-  const getTask = async() =>{
-    const response = await getTasksFromServer()
-    console.log(response.data)
-    if(response) setTasks(response.data)
-  }
+  const getTask = async () => {
+    const response = await getTasksFromServer();
+    console.log(response.data);
+    if (response) setTasks(response.data);
+  };
 
   const filteredTasks = tasks.filter((task) => {
     if (selectedPriority === "all" || task.priority === selectedPriority) {
@@ -29,32 +29,37 @@ function ViewTask () {
     return false;
   });
 
+  // Sort the tasks by date and time in ascending order
+  filteredTasks.sort((a, b) => {
+    const dateA = new Date(a.selectedDate + "T" + a.selectedTime);
+    const dateB = new Date(b.selectedDate + "T" + b.selectedTime);
+    return dateA - dateB;
+  });
 
-    // Function to open the modal and set the selected task
-    const openTaskModal = (task) => {
-      setSelectedTask(task);
-    };
+  // Function to open the modal and set the selected task
+  const openTaskModal = (task) => {
+    setSelectedTask(task);
+  };
 
-
-    const deleteData = async(taskId) =>{
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-      }).then(async(result) => {
-        if (result.isConfirmed) {
-          const response = await deleteTask(taskId)
-          if(response){
-            Swal.fire("Deleted!", "Your task has been deleted.", "success");
-            setRefresh(!refresh)
-          } 
+  const deleteData = async (taskId) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const response = await deleteTask(taskId);
+        if (response) {
+          Swal.fire("Deleted!", "Your task has been deleted.", "success");
+          setRefresh(!refresh);
         }
-      });
-    }
+      }
+    });
+  }
 
 
   return (

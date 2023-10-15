@@ -22,10 +22,15 @@ module.exports = {
     const query = 'SELECT * FROM tasks';
     db.query(query, (err, results) => {
       if (err) {
-        console.error('Error fetching tasks:', err);
         res.status(500).json({ error: 'Failed to fetch tasks' });
       } else {
-        console.log(results)
+        // Sort the results based on selectedDate
+        results.sort((a, b) => {
+          const dateA = new Date(a.selectedDate);
+          const dateB = new Date(b.selectedDate);
+          return dateA - dateB;
+        });
+
         res.status(200).json(results);
       }
     });
@@ -33,7 +38,7 @@ module.exports = {
 
   deleteTask: (req, res) => {
     const { taskId } = req.body;
-    if(!taskId) return res.status(400).json({message:"Requires Task Id to Delete"})
+    if (!taskId) return res.status(400).json({ message: "Requires Task Id to Delete" })
     const deleteQuery = 'DELETE FROM tasks WHERE id = ?';
     db.query(deleteQuery, [taskId], (err, results) => {
       if (err) {
@@ -48,7 +53,6 @@ module.exports = {
 
   updateTask: (req, res) => {
     const { taskDetails } = req.body;
-
     if (!taskDetails.id) {
       return res.status(400).json({ message: 'Task ID is required for updating a task' });
     }
@@ -56,7 +60,7 @@ module.exports = {
     taskDetails.selectedDate = formattedDate;
     const updateQuery = 'UPDATE tasks SET imageUrl=?, taskName=?, description=?, selectedDate=?, selectedTime=?, priority=? WHERE id=?';
     const values = [taskDetails.imageUrl, taskDetails.taskName, taskDetails.description, taskDetails.selectedDate, taskDetails.selectedTime, taskDetails.priority, taskDetails.id];
-  
+
     db.query(updateQuery, values, (err) => {
       if (err) {
         res.status(500).json({ message: 'Failed to update task' });
@@ -66,5 +70,5 @@ module.exports = {
     });
   }
 
-  
+
 };

@@ -43,6 +43,8 @@ function EditTask() {
     }
     if(!defaultDate){
       setError('Please Enter the date')
+    }else{
+      taskDetails.selectedDate = defaultDate
     }
 
     if(image){
@@ -55,6 +57,8 @@ function EditTask() {
     }
 
     toast.loading('Editing...')
+
+
     const response = await updateTask(taskDetails);
     toast.dismiss()
     if(response){
