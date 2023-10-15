@@ -1,0 +1,117 @@
+{
+	"info": {
+		"_postman_id": "24f33a44-1c37-4ba9-a080-cb6529cd31c9",
+		"name": "Task Schedule backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28133931"
+	},
+	"item": [
+		{
+			"name": "Add Task",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"value\": {\n    \"imageUrl\": \"https://res.cloudinary.com/dg047twga/image/upload/v1697285386/ap5ci7ghhr2ra6iyibrw.jpg\",\n    \"taskName\": \"iashdfuhaidsufh\",\n    \"description\": \"hasidufh\",\n    \"selectedDate\": \"2023-10-14T12:25:33.244Z\",\n    \"selectedTime\": \"11:22\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/addTask",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"addTask"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Task",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/getTask",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"getTask"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Task",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"taskDetails\": {\n    \"id\": 15,\n    \"imageUrl\": \"https://res.cloudinary.com/dg047twga/image/upload/v1697285386/ap5ci7ghhr2ra6iyibrw.jpg\",\n    \"taskName\": \"updated\",\n    \"description\": \"hasidufh\",\n    \"selectedDate\": \"2023-10-14T12:25:33.244Z\",\n    \"selectedTime\": \"11:22\",\n    \"priority\": \"low\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/updateTask",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"updateTask"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteTask",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"data\": {\n             \"taskId\": \"15\" \n             }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/deleteTask",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"deleteTask"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
