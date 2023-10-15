@@ -27,18 +27,21 @@ function TaskModal({task}) {
     >
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-lg"> {/* Adjusted max-w-lg */}
         <img
-          src="https://cdn-icons-png.flaticon.com/512/2665/2665038.png"
+        src={selectedTask?.imageUrl}
           alt="Task Image"
           className="w-20 h-20 mx-auto mb-4"
         />
         <h2 className="text-2xl font-bold text-center mb-2">
-          {selectedTask?.name} ({selectedTask?.priority})
+          {selectedTask?.taskName} ({selectedTask?.description})
         </h2>
         <p className="text-sm text-gray-600 text-center mb-2">
-          Date: {selectedTask?.date}
+          Date:  {new Date(selectedTask?.selectedDate).toDateString()}
         </p>
         <p className="text-sm text-gray-600 text-center mb-4">
-          Time: {selectedTask?.time}
+          Time: {selectedTask?.selectedTime}
+        </p>
+        <p className="text-sm text-gray-600 text-center mb-4">
+          Proiority: {selectedTask?.priority}
         </p>
         <p className="text-base text-gray-800 mb-4">
           {selectedTask?.description}

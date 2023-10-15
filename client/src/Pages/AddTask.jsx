@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import axios from "axios";
 import { addTask } from "../API/taskAPI";
+import toast from 'react-hot-toast'
+import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 
 const AddTask = () => {
   const [image, setImage] = useState(null);
@@ -10,7 +12,11 @@ const AddTask = () => {
   const [description, setDescription] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime,setSelectedTime] = useState('')
+  const [priority,setPriority] = useState('low')
   const [error, setError] = useState(null);
+
+
+  const navigate = useNavigate()
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -50,22 +56,26 @@ const AddTask = () => {
       setError("Please Add Description");
       return;
     }
+    if(!priority){
+      setError('Please select the Priority')
+      return
+    }
     setError(null);
 
-    // const formData = new FormData();
-    // formData.append("file", image);
-    // formData.append("upload_preset", "drcareStorage");
-    // const cloudinaryResponse = await axios.post("https://api.cloudinary.com/v1_1/dg047twga/image/upload",formData);
-    // const imageUrl = cloudinaryResponse.data.secure_url;
-    const imageUrl = "https://res.cloudinary.com/dg047twga/image/upload/v1697285386/ap5ci7ghhr2ra6iyibrw.jpg";
+    toast.loading('Uploading task...')
 
-    const task = { imageUrl, taskName, description, selectedDate,selectedTime };
-
+    const formData = new FormData();
+    formData.append("file", image);
+    formData.append("upload_preset", "drcareStorage");
+    const cloudinaryResponse = await axios.post("https://api.cloudinary.com/v1_1/dg047twga/image/upload",formData);
+    const imageUrl = cloudinaryResponse.data.secure_url;
+    const task = { imageUrl, taskName, description, selectedDate,selectedTime,priority };
     const response = await addTask(task)
-
-    console.log(response)
-
-
+    toast.dismiss()
+    if(response){
+      toast.success(response.data.message)
+      navigate('/')
+    }
 
   };
 
@@ -141,6 +151,22 @@ const AddTask = () => {
             />
           </div>
 
+          {/* Priority */}
+          <div className="flex items-center justify-center leading-tight p-2 md-p-4">
+        <select
+          id="priorityFilter"
+          value={priority}
+          onChange={(e) => setPriority(e.target.value)}
+          className="block w-3/4 mt-2 p-2 border rounded-md focus:ring focus:ring-indigo-300 focus:outline-none focus:border-indigo-300"
+        >
+          <option value="low">Low (priority)</option>
+          <option value="medium">Medium (priority)</option>
+          <option value="high">High (priority)</option>
+        </select>
+
+        </div>
+
+
           {/* Date Picker for Date */}
           <div className="flex items-center justify-center leading-tight p-2 md-p-4">
             <DatePicker
@@ -161,6 +187,7 @@ const AddTask = () => {
               className="w-1/4 p-2 border border-gray-300 rounded focus-border-blue-300 outline-none"
             />
           </div>
+
 
           {/* Add Task Button */}
           <div className="flex items-center justify-center leading-tight p-2 md-p-4">

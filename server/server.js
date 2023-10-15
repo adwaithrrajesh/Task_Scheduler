@@ -4,6 +4,7 @@ const morgan  = require('morgan');
 const app = express();
 const dotenv = require('dotenv');
 const TaskRouter = require('./routes/taskRouter')
+require('./database/config')
 
 
 //------------ Requiring DOTENV -----------------
